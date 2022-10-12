@@ -3,23 +3,25 @@ namespace Speed
 {
     public class Car
     {
-        public Car(String name)
+        int speed = 0;
+        Random random = new Random();
+        int sum = 0;
+        int sredspeed;
+        int time = 0;
+        int timetoend;
+        int mtosec;
+        int s;
+        int i;
+        public Car(String name, int distance)
         {
-            Console.WriteLine("Название машины: " + name);
-            Console.Write("Введите растояние: ");
-            Run(int.Parse(Console.ReadLine()));
-            Console.WriteLine("Вы приехали!");
+            s = distance;
+            Thread thread = new Thread(new ThreadStart(Speed));
+            thread.Start();
+            Distance();
         }
-        public static void Run(int s)
+        public void Distance()
         {
-            int speed = 0;
-            Random random = new Random();
-            int sum = 0;
-            int sredspeed;
-            int time = 0;
-            int timetoend;
-            int mtosec;
-            for (int i = s * 1000; i > 0; i = i - mtosec)
+            for (i = s * 1000; i > 0; i = i - mtosec)
             {
                 speed = speed + random.Next(8) + 2;
                 if (speed > 100)
@@ -30,9 +32,8 @@ namespace Speed
                 time++;
                 sredspeed = sum / time;
                 mtosec = (int)(speed / 3.6);
-                timetoend = (int)(i / (sredspeed/3.6));
-                Console.WriteLine("Текущая скорость: " + speed + " км/ч");
                 Console.WriteLine("Средняя скорость: " + sredspeed + " км/ч");
+                Console.WriteLine("Скорость: " + speed + " км/ч");
                 Console.WriteLine("Осталось ехать: " + i + " м");
                 Console.WriteLine("Времени до прибытия: " + timetoend + " c");
                 Console.WriteLine();
@@ -45,7 +46,25 @@ namespace Speed
                     Console.WriteLine(e);
                 }
             }
+            Console.WriteLine("Вы приехали");
+            Console.ReadLine();
         }
+        public void Speed()
+        {
+            for (i = s * 1000; i > 0; i = i - mtosec)
+            {
+                mtosec = (int)(speed / 3.6);
+                timetoend = (int)(i / (sredspeed / 3.6));
+                try
+                {
+                    Thread.Sleep(1000);
+                }
+                catch (ThreadInterruptedException e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
         }
+    }
 }
 
